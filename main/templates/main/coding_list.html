@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Coding Problems</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .problem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .difficulty {
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .easy { background: green; }
+        .medium { background: orange; }
+        .hard { background: red; }
+
+        .completed {
+            color: green;
+            font-weight: bold;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            margin: 5px;
+            padding: 8px 12px;
+            background: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>💻 Coding Problems</h1>
+
+    <!-- 🔍 SEARCH + FILTER -->
+    <form method="GET" class="top-bar">
+        <input type="text" name="q" placeholder="Search problem..." value="{{ request.GET.q }}">
+
+        <select name="difficulty">
+            <option value="">All</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <!-- 📋 PROBLEMS -->
+    {% for q in page_obj %}
+    <div class="problem">
+        <a href="{% url 'coding_detail' q.id %}">
+            {{ q.title }}
+        </a>
+
+        <div>
+            <span class="difficulty 
+                {% if q.difficulty == 'Easy' %}easy{% endif %}
+                {% if q.difficulty == 'Medium' %}medium{% endif %}
+                {% if q.difficulty == 'Hard' %}hard{% endif %}
+            ">
+                {{ q.difficulty }}
+            </span>
+
+            <!-- ✔ COMPLETED -->
+            {% if q.id in request.session.completed %}
+                <span class="completed">✔ Done</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- 📄 PAGINATION -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">⬅</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">➡</a>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>

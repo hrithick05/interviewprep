@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HR Interview Completed</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #eef2f7, #d9e4f5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .card {
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+  h1 {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+  }
+
+  .icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+  }
+
+  .score {
+    font-size: 1.4rem;
+    color: #555;
+    margin: 20px 0;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #2c3e50;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: 0.3s;
+  }
+
+  .btn:hover {
+    background: #1a252f;
+    transform: scale(1.05);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="icon">🎉</div>
+
+  <h1>HR Interview Completed!</h1>
+
+  <div class="score">
+    You answered <b>{{ total }}</b> questions
+  </div>
+
+  <p style="color:#666;">Great job! Keep improving your communication skills 🚀</p>
+
+  <br>
+
+  <a href="{% url 'home' %}" class="btn">🏠 Go Home</a>
+
+</div>
+
+<h2>Your Answers & Feedback</h2>
+
+{% for ans in answers %}
+  <div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;">
+    <p><b>Answer:</b> {{ ans }}</p>
+    <p><b>Feedback:</b> {{ feedback|slice:forloop.counter0|first }}</p>
+  </div>
+{% endfor %}
+
+</body>
+</html>

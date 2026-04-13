@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interview Prep Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f4f8;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark {
+      background: #121212;
+      color: #eee;
+    }
+    header {
+      background: #002b5b;
+      color: white;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    header h1 { font-size: 24px; }
+
+    .toggle-btn {
+      background: none;
+      border: 2px solid #ffcc00;
+      color: #ffcc00;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .toggle-btn:hover {
+      background: #ffcc00;
+      color: #002b5b;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #002b5b, #005792);
+      color: white;
+      padding: 100px 20px;
+      text-align: center;
+    }
+    .hero h2 { font-size: 36px; margin-bottom: 10px; }
+    .hero span#typing {
+      color: #ffcc00;
+      border-right: 2px solid white;
+      font-weight: bold;
+    }
+    .hero p { font-size: 18px; margin: 20px auto 30px; max-width: 600px; }
+    .hero button {
+      background: #ffcc00;
+      color: #002b5b;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .hero button:hover { background: #ffe066; }
+
+    section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    .features, .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+    }
+    .feature-box, .step {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 25px;
+      text-align: center;
+      transition: transform 0.3s, background 0.3s, color 0.3s;
+    }
+    .feature-box:hover, .step:hover {
+      transform: translateY(-10px);
+    }
+
+    body.dark .feature-box, body.dark .step {
+      background: #1e1e1e;
+      color: #eee;
+    }
+
+    .feature-box h3, .step h4 {
+      color: #002b5b;
+    }
+    body.dark .feature-box h3, body.dark .step h4 {
+      color: #ffcc00;
+    }
+
+    .feature-box i {
+      font-size: 30px;
+      color: #005792;
+      margin-bottom: 10px;
+    }
+    .tooltip {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #005792;
+      color: white;
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      display: none;
+    }
+    .step:hover .tooltip {
+      display: block;
+    }
+
+    .testimonial-box {
+      background: white;
+      padding: 25px;
+      border-left: 4px solid #005792;
+      margin-bottom: 20px;
+      transition: all 0.3s;
+      font-style: italic;
+    }
+    .testimonial-box.active {
+      background: #e9f1f7;
+    }
+    body.dark .testimonial-box {
+      background: #1e1e1e;
+      border-color: #ffcc00;
+      color: #eee;
+    }
+
+    footer {
+      background: #002b5b;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    #authModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    #authModal .modal-content {
+      background: white;
+      color: #002b5b;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      min-width: 280px;
+    }
+
+    body.dark #authModal .modal-content {
+      background: #1e1e1e;
+      color: #eee;
+    }
+
+    #authModal button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #authModal button.login {
+      background: #005792;
+      color: white;
+    }
+
+    #authModal button.signup {
+      background: #ffcc00;
+      color: #002b5b;
+    }
+
+    #authModal button.cancel {
+      background: transparent;
+      color: red;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero h2 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <h1>Interview Preparation</h1>
+
+  
+
+  <div style="display:flex; align-items:center; gap:10px;">
+
+    <!-- DARK MODE BUTTON -->
+    <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark</button>
+
+    <!-- AUTH BUTTONS -->
+    {% if user.is_authenticated %}
+        <span style="color:#ffcc00; font-weight:600;">
+            👋 {{ user.username }}
+        </span>
+
+        <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+    {% csrf_token %}
+    <button style="
+        background:#e74c3c;
+        color:white;
+        padding:6px 14px;
+        border:none;
+        border-radius:20px;
+        cursor:pointer;
+        font-size:14px;
+    ">
+        Logout
+    </button>
+</form>
+{% if user.is_authenticated %}
+    
+    {% if user.is_superuser %}
+        <a href="{% url 'admin_dashboard' %}">
+            <button style="
+                background:#e67e22;
+                color:white;
+                padding:6px 14px;
+                border:none;
+                border-radius:20px;
+                cursor:pointer;
+                font-size:14px;
+            ">
+                Admin
+            </button>
+        </a>
+    {% endif %}
+
+{% endif %}
+    {% else %}
+        <a href="{% url 'login' %}">
+            <button style="
+                background:#005792;
+                color:white;
+                padding:6px 14px;
+                border:none;
+                border-radius:20px;
+                cursor:pointer;
+                font-size:14px;
+            ">
+                Login
+            </button>
+        </a>
+
+        <a href="{% url 'admin_login' %}">
+            <button style="
+                background:#e67e22;
+                color:white;
+                padding:6px 14px;
+                border:none;
+                border-radius:20px;
+                cursor:pointer;
+                font-size:14px;
+            ">
+                Admin
+            </button>
+        </a>
+    {% endif %}
+
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <h2>Welcome to Your Career Booster!</h2>
+  <p><span id="typing"></span></p>
+  <p>Master interviews, sharpen coding skills, and build your dream resume all in one place.</p>
+  <button onclick="document.getElementById('authModal').style.display='flex'">Get Started</button>
+</section>
+
+<!-- Features -->
+<section id="features">
+  <h2 style="text-align:center; margin-bottom: 30px;">Explore Our Features</h2>
+
+  <div class="features">
+
+    <!-- Mock Interview -->
+    <a href="{% url 'preference_page' %}" style="text-decoration:none; color:inherit;">
+      <div class="feature-box">
+        <i>🧠</i>
+        <h3>Mock Interviews</h3>
+        <p>Practice with AI or mentors to simulate real experiences.</p>
+      </div>
+    </a>
+
+    <!-- Resume Builder -->
+    <a href="{% url 'resume_templates' %}" style="text-decoration:none; color:inherit;">
+      <div class="feature-box">
+        <i>📄</i>
+        <h3>Resume Builder</h3>
+        <p>Generate professional resumes with customizable templates.</p>
+      </div>
+    </a>
+
+    <!-- Coding Practice 🔥 FIXED -->
+    <a href="{% url 'coding_practice' %}" style="text-decoration:none; color:inherit;">
+      <div class="feature-box">
+        <i>💻</i>
+        <h3>Coding Practice</h3>
+        <p>Solve coding challenges with instant feedback.</p>
+      </div>
+    </a>
+
+<!-- HR Questions -->
+<a href="{% url 'hr_questions' %}" style="text-decoration:none; color:inherit;">
+  <div class="feature-box">
+    <i>🗣️</i>
+    <h3>HR Questions</h3>
+    <p>Prepare for behavioral rounds with real-world examples.</p>
+  </div>
+</a>
+
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how">
+  <h2 style="text-align:center;">How It Works</h2>
+  <div class="steps">
+    <div class="step">
+      <h4>1. Sign Up</h4>
+      <p>Create a free account and complete your profile.</p>
+      <div class="tooltip">Free for all users!</div>
+    </div>
+    <div class="step">
+      <h4>2. Choose a Track</h4>
+      <p>Select coding, HR, or company-specific questions.</p>
+      <div class="tooltip">Guided preparation</div>
+    </div>
+    <div class="step">
+      <h4>3. Practice</h4>
+      <p>Take quizzes and mock interviews with feedback.</p>
+      <div class="tooltip">AI-based or expert-led</div>
+    </div>
+    <div class="step">
+      <h4>4. Get Hired</h4>
+      <p>Track your progress and land your dream job.</p>
+      <div class="tooltip">Daily tips & support</div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials">
+  <h2 style="text-align:center;">What Our Users Say</h2>
+  <div class="testimonial-box active" id="testimonial-text">
+    "From shy to shining: this platform transformed me!" — <strong>Surya</strong>
+  </div>
+</section>
+
+<!-- Auth Choice Modal -->
+<div id="authModal">
+  <div class="modal-content">
+    <h3>Get Started</h3>
+    <p>Choose an option to proceed:</p>
+    <button class="login" onclick="window.location.href='/accounts/login/'">Login</button>
+    <button class="signup" onclick="window.location.href='/accounts/signup/'">Sign Up</button><br/><br/>
+    <button class="cancel" onclick="document.getElementById('authModal').style.display='none'">Cancel</button>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  &copy; 2025 Interview Prep Pro | <a href="/terms" style="color: #ffcc00;">Terms & Privacy</a>
+</footer>
+
+<!-- JavaScript -->
+<script>
+  const typingText = ["Crack Your Dream Job", "Master Interviews", "Build a Smart Resume"];
+  let idx = 0, char = 0;
+  const typingEl = document.getElementById('typing');
+
+  function type() {
+    if (char <= typingText[idx].length) {
+      typingEl.innerText = typingText[idx].substring(0, char++);
+      setTimeout(type, 100);
+    } else {
+      setTimeout(() => {
+        char = 0;
+        idx = (idx + 1) % typingText.length;
+        type();
+      }, 1500);
+    }
+  }
+  type();
+
+  const testimonials = [
+    `"From shy to shining: this platform transformed me!" — Surya`,
+    `"The resume builder is super helpful and quick!" — Meena`,
+    `"Mock interviews felt real and prepared me well." — Ramesh`,
+  ];
+  let current = 0;
+  setInterval(() => {
+    current = (current + 1) % testimonials.length;
+    document.getElementById('testimonial-text').innerHTML = testimonials[current];
+  }, 4000);
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+  }
+</script>
+
+</body>
+</html>

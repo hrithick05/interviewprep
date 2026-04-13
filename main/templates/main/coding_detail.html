@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ question.title }}</title>
+
+  <style>
+    body { display:flex; font-family: Arial; }
+
+    .left {
+      width: 40%;
+      padding: 20px;
+      border-right: 2px solid #ccc;
+    }
+
+    .right {
+      width: 60%;
+      padding: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 300px;
+    }
+
+    button {
+      padding: 10px;
+      background: #2c3e50;
+      color: white;
+      border: none;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- LEFT SIDE -->
+<!-- LEFT SIDE -->
+<div class="left">
+  <h2>{{ question.title }}</h2>
+  <p><b>Difficulty:</b> {{ question.difficulty }}</p>
+  <p>{{ question.description }}</p>
+
+  <h4>Input:</h4>
+  <pre>{{ question.input_data }}</pre>
+
+  <h4>Expected Output:</h4>
+  <pre>{{ question.expected_output }}</pre>
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="right">
+  <h3>Write your code</h3>
+
+  <textarea id="code"></textarea>
+
+  <br><br>
+
+  <button onclick="runCode()">Submit</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  
+function runCode() {
+    const code = document.getElementById("code").value;
+
+    fetch("{% url 'run_code' %}", {
+        method: "POST",
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: new URLSearchParams({
+            code: code,
+            question_id: "{{ question.id }}"
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerText =
+            data.result || data.error;
+    });
+}
+</script>
+
+</body>
+</html>

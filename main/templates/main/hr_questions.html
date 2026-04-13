@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HR Interview</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #eef2f7, #d9e4f5);
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin: 40px auto;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #2c3e50;
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #1a252f;
+      transform: scale(1.05);
+    }
+
+    .timer {
+      text-align: right;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+
+    .speech-btn {
+      margin-top: 10px;
+      background: #3498db;
+    }
+
+    .speech-btn:hover {
+      background: #2c80b4;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2>💬 HR Interview</h2>
+
+  <!-- TIMER -->
+  <div class="timer" id="timer">Time: 60s</div>
+
+  <form method="POST" id="hr-form">
+    {% csrf_token %}
+
+    <p class="question"><b>Q:</b> {{ question.question_text }}</p>
+
+    <textarea name="answer" rows="5" placeholder="Type your answer..." required></textarea>
+
+    <!-- SPEECH BUTTON -->
+    <button type="button" class="btn speech-btn" onclick="startSpeech()">🎤 Speak</button>
+
+    <input type="hidden" name="q_index" value="{{ q_index }}">
+
+    <br>
+
+    <button type="submit" class="btn">Next ➡️</button>
+
+  </form>
+
+</div>
+
+<!-- TIMER SCRIPT -->
+<script>
+let time = 60;
+const timerEl = document.getElementById("timer");
+
+const countdown = setInterval(() => {
+  time--;
+  timerEl.innerText = "Time: " + time + "s";
+
+  if (time <= 0) {
+    clearInterval(countdown);
+    document.getElementById("hr-form").submit();
+  }
+}, 1000);
+</script>
+
+<!-- SPEECH SCRIPT -->
+<script>
+function startSpeech() {
+  const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!Speech) {
+    alert("Speech recognition not supported in your browser");
+    return;
+  }
+
+  const recognition = new Speech();
+  recognition.lang = "en-US";
+  recognition.start();
+
+  recognition.onresult = function(event) {
+    const text = event.results[0][0].transcript;
+    document.querySelector("textarea").value = text;
+  };
+}
+</script>
+
+</body>
+</html>
