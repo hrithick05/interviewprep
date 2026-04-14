@@ -13,6 +13,9 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']  # change after deploy
 
+# Render explicitly needs this for POST requests (like Logins/Signups)
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+
 # =========================
 # 🔹 INSTALLED APPS
 # =========================
@@ -111,12 +114,21 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+static_dir = os.path.join(BASE_DIR, "static")
+if os.path.exists(static_dir):
+    STATICFILES_DIRS = [static_dir]
+else:
+    STATICFILES_DIRS = []
 
-# ✅ WhiteNoise storage
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# ✅ WhiteNoise storage (Django 4.2+)
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # =========================
 # 🔹 MEDIA FILES
