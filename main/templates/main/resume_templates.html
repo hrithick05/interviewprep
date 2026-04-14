@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Builder</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 30px;
+            color: #2c3e50;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            padding: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .preview {
+            height: 180px;
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #1a252f;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Choose Your Resume Template</h1>
+
+<div class="container">
+
+    <!-- TEMPLATE 1 -->
+    <div class="card" onclick="selectTemplate(1)">
+        <div class="preview"></div>
+        <div class="title">Modern Resume</div>
+        <button class="btn">Use Template</button>
+    </div>
+
+    <!-- TEMPLATE 2 -->
+    <div class="card" onclick="selectTemplate(2)">
+        <div class="preview" style="background: linear-gradient(135deg,#e67e22,#e74c3c)"></div>
+        <div class="title">Sidebar Resume</div>
+        <button class="btn">Use Template</button>
+    </div>
+
+    <!-- TEMPLATE 3 -->
+    <div class="card" onclick="selectTemplate(3)">
+        <div class="preview" style="background: linear-gradient(135deg,#16a085,#27ae60)"></div>
+        <div class="title">Minimal Resume</div>
+        <button class="btn">Use Template</button>
+    </div>
+
+    <!-- TEMPLATE 4 -->
+    <div class="card" onclick="selectTemplate(4)">
+        <div class="preview" style="background: linear-gradient(135deg,#9b59b6,#2c3e50)"></div>
+        <div class="title">Creative Resume</div>
+        <button class="btn">Use Template</button>
+    </div>
+
+</div>
+
+<script>
+function selectTemplate(id) {
+    window.location.href = `/resume/form/${id}/`;
+}
+</script>
+
+</body>
+</html>

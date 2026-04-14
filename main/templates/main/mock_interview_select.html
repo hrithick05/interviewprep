@@ -1,0 +1,43 @@
+<div class="card">
+  <h2>Select Your Mock Interview Preferences</h2>
+  <form id="preference-form">
+    <label for="field">Select your field:</label>
+    <select id="field" name="field" required>
+      <option value="">-- Choose a field --</option>
+      <option value="Web Development">Web Development</option>
+      <option value="Data Structures">Data Structures</option>
+      <option value="Python Programming">Python Programming</option>
+      <option value="Java Programming">Java Programming</option>
+      <option value="Databases">Databases</option>
+      <option value="General HR">General HR</option>
+    </select>
+
+    <label for="category">What type of questions do you want?</label>
+    <select id="category" name="category" required>
+      <option value="">-- Choose a category --</option>
+      <option value="Coding">Coding</option>
+      <option value="Theory">Theory</option>
+      <option value="HR Questions">HR Questions</option>
+    </select>
+
+    <div class="actions">
+      <button type="submit" class="btn">🎯 Start Interview</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.getElementById("preference-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const field = document.getElementById("field").value;
+    const category = document.getElementById("category").value;
+
+    if (!field || !category) {
+      alert("Please select both field and question category.");
+      return;
+    }
+
+    // Redirect to new mock interview page with query parameters
+    window.location.href = `/mock_interview/?field=${encodeURIComponent(field)}&category=${encodeURIComponent(category)}`;
+  });
+</script>

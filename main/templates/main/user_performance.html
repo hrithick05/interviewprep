@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ user.username }} - Performance</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.back-link {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.back-link a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+/* Cards */
+.card {
+    background: #fff;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #2c3e50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: #f2f2f2;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+/* Colors */
+.correct { color: green; font-weight: bold; }
+.wrong { color: red; font-weight: bold; }
+
+/* Stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat-box h3 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.stat-box p {
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Grid Layout */
+.dashboard {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.empty-message {
+    color: #999;
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="back-link">
+    <a href="{% url 'admin_dashboard' %}">← Back to Admin Dashboard</a>
+</div>
+
+<h1>📊 {{ user.username }}'s Performance</h1>
+
+<div class="dashboard">
+
+    <!-- CODING STATS -->
+    {% if coding_data %}
+    <div class="card">
+        <div class="section-title">💻 Coding Practice Statistics</div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <h3>{{ coding_data.total }}</h3>
+                <p>Total Submissions</p>
+            </div>
+            <div class="stat-box">
+                <h3 style="color: #2ecc71;">{{ coding_data.correct }}</h3>
+                <p>Correct</p>
+            </div>
+            <div class="stat-box">
+                <h3 style="color: #e74c3c;">{{ coding_data.wrong }}</h3>
+                <p>Wrong</p>
+            </div>
+            <div class="stat-box">
+                <h3>{{ coding_data.accuracy }}%</h3>
+                <p>Accuracy</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- INTERVIEW DATA -->
+    {% if interview_data %}
+    <div class="card">
+        <div class="section-title">🎤 Interview Performance</div>
+
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Category</th>
+                <th>Score</th>
+                <th>Date</th>
+            </tr>
+
+            {% for i in interview_data %}
+            <tr>
+                <td>{{ i.field }}</td>
+                <td>{{ i.category }}</td>
+                <td><b>{{ i.total_score }}/10</b></td>
+                <td>{{ i.date|date:"Y-m-d H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- HR ANSWERS -->
+    {% if hr_answers_data %}
+    <div class="card">
+        <div class="section-title">🎯 HR Interview Answers</div>
+
+        <table>
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Date</th>
+            </tr>
+
+            {% for hr in hr_answers_data %}
+            <tr>
+                <td style="max-width: 250px;">{{ hr.question.question_text }}</td>
+                <td style="max-width: 400px;">{{ hr.answer_text }}</td>
+                <td>{{ hr.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="empty-message">No HR answers recorded yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="empty-message">No data available for this user yet.</div>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<style>
+body { font-family: Arial; background:#f4f6f9; }
+.card { max-width:800px; margin:auto; background:white; padding:30px; }
+
+.profile {
+  text-align:center;
+}
+
+.profile img {
+  width:120px;
+  height:120px;
+  border-radius:50%;
+}
+
+.skill {
+  margin-bottom:10px;
+}
+
+.bar {
+  background:#ddd;
+  border-radius:5px;
+}
+
+.fill {
+  background:#2c3e50;
+  height:10px;
+  border-radius:5px;
+}
+</style>
+
+<div class="card">
+
+<div class="profile">
+  {% if photo %}
+    <img src="{{ photo.url }}">
+  {% endif %}
+  <h1>{{ name }}</h1>
+  <p>{{ email }} | {{ phone }}</p>
+</div>
+
+<h2>Skills</h2>
+
+{% for skill in skills %}
+  <div class="skill">
+    {{ skill.name }}
+    <div class="bar">
+      <div class="fill" style="width:{{ skill.level }}%"></div>
+    </div>
+  </div>
+{% endfor %}
+
+<h2>Education</h2>
+<p>{{ education }}</p>
+
+<h2>Projects</h2>
+<p>{{ projects }}</p>
+
+</div>

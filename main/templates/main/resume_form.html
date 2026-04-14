@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Build Resume</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f9;
+      padding: 20px;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+    }
+
+    .form-box, .preview-box {
+      width: 50%;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #2c3e50;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1a252f;
+    }
+
+    .preview img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+
+    .skill-bar {
+      background: #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .skill-fill {
+      height: 10px;
+      background: #2c3e50;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Build Your Resume</h2>
+
+<div class="container">
+
+  <!-- 🔹 FORM -->
+  <div class="form-box">
+    <form method="POST" action="{% url 'generate_resume' %}" enctype="multipart/form-data" id="resumeForm">
+      {% csrf_token %}
+
+      <input type="hidden" name="template_id" value="{{ template_id }}">
+
+      Name:
+      <input type="text" name="name" oninput="updatePreview()">
+
+      Email:
+      <input type="text" name="email" oninput="updatePreview()">
+
+      Phone:
+      <input type="text" name="phone" oninput="updatePreview()">
+
+      <!-- 🔥 PHOTO -->
+      Profile Photo:
+      <input type="file" name="photo" onchange="previewImage(event)">
+
+      <!-- 🔥 SKILLS -->
+      Skills (format: Python:90, Java:80):
+      <textarea name="skills" oninput="updatePreview()"></textarea>
+
+      Education:
+      <textarea name="education" oninput="updatePreview()"></textarea>
+
+      Projects:
+      <textarea name="projects" oninput="updatePreview()"></textarea>
+
+      <button type="submit">Generate Resume</button>
+    </form>
+  </div>
+
+  <!-- 🔹 LIVE PREVIEW -->
+  <div class="preview-box preview">
+    <div style="text-align:center;">
+      <img id="p_image" style="display:none;">
+      <h2 id="p_name"></h2>
+      <p id="p_email"></p>
+      <p id="p_phone"></p>
+    </div>
+
+    <h3>Skills</h3>
+    <div id="p_skills"></div>
+
+    <h3>Education</h3>
+    <p id="p_education"></p>
+
+    <h3>Projects</h3>
+    <p id="p_projects"></p>
+  </div>
+
+</div>
+
+<script>
+function updatePreview() {
+  const form = document.forms['resumeForm'];
+
+  document.getElementById("p_name").innerText = form.name.value;
+  document.getElementById("p_email").innerText = form.email.value;
+  document.getElementById("p_phone").innerText = form.phone.value;
+  document.getElementById("p_education").innerText = form.education.value;
+  document.getElementById("p_projects").innerText = form.projects.value;
+
+  // 🔥 SKILL BARS
+  const skillsContainer = document.getElementById("p_skills");
+  skillsContainer.innerHTML = "";
+
+  const skills = form.skills.value.split(',');
+
+  skills.forEach(skill => {
+    if (skill.includes(':')) {
+      let [name, level] = skill.split(':');
+
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <p>${name}</p>
+        <div class="skill-bar">
+          <div class="skill-fill" style="width:${level}%"></div>
+        </div>
+      `;
+      skillsContainer.appendChild(div);
+    }
+  });
+}
+
+// 🔥 IMAGE PREVIEW
+function previewImage(event) {
+  const reader = new FileReader();
+  reader.onload = function(){
+    const img = document.getElementById('p_image');
+    img.src = reader.result;
+    img.style.display = "block";
+  }
+  reader.readAsDataURL(event.target.files[0]);
+}
+</script>
+
+</body>
+</html>

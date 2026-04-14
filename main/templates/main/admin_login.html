@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            height: 100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .box {
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            width:300px;
+            text-align:center;
+        }
+
+        input {
+            width:100%;
+            padding:10px;
+            margin:10px 0;
+        }
+
+        button {
+            width:100%;
+            padding:10px;
+            background:#ff9800;
+            border:none;
+            color:white;
+        }
+
+        .error {
+            color:red;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Admin Login</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+</body>
+</html>

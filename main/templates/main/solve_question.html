@@ -1,0 +1,27 @@
+<h2>{{ question.title }}</h2>
+
+<p>{{ question.description }}</p>
+
+<p><b>Input:</b> {{ question.input_example }}</p>
+<p><b>Output:</b> {{ question.output_example }}</p>
+
+<textarea id="code" rows="10" cols="80"></textarea><br><br>
+
+<button onclick="submitCode()">Run Code</button>
+
+<script>
+function submitCode() {
+    fetch("{% url 'submit_code' %}", {
+        method: "POST",
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: new URLSearchParams({
+            'code': document.getElementById('code').value,
+            'q_id': '{{ question.id }}'
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message))
+}
+</script>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Preferences</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+        }
+
+        .container {
+            width: 400px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1a252f;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Select Interview Preferences</h2>
+
+    <form method="GET" action="{% url 'mock_interview' %}">
+
+        <!-- FIELD DROPDOWN -->
+        <label>Field</label>
+        <select name="field" id="field" required>
+            <option value="">-- Select Field --</option>
+            <option value="HR">HR</option>
+            <option value="Technical">Technical</option>
+            <option value="Aptitude">Aptitude</option>
+        </select>
+
+        <!-- CATEGORY DROPDOWN -->
+        <label>Category</label>
+        <select name="category" id="category" required>
+            <option value="">-- Select Category --</option>
+        </select>
+
+        <button type="submit">🚀 Start Interview</button>
+
+    </form>
+</div>
+
+<!-- 🔥 DYNAMIC SCRIPT -->
+<script>
+const field = document.getElementById("field");
+const category = document.getElementById("category");
+
+field.addEventListener("change", function () {
+    let value = this.value;
+
+    category.innerHTML = "";
+
+    if (value === "HR") {
+        category.innerHTML = `<option value="HR Questions">HR Questions</option>`;
+    }
+
+    else if (value === "Technical") {
+        category.innerHTML = `
+            <option value="CSE">CSE</option>
+            <option value="Java">Java</option>
+            <option value="Python">Python</option>
+            <option value="DBMS">DBMS</option>
+        `;
+    }
+
+    else if (value === "Aptitude") {
+        category.innerHTML = `<option value="General">General</option>`;
+    }
+});
+</script>
+
+</body>
+</html>

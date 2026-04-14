@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #002b5b, #005792);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .signup-box {
+            background: white;
+            padding: 40px;
+            width: 380px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #002b5b;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #ffcc00;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #ffd633;
+        }
+
+        .login {
+            margin-top: 15px;
+        }
+
+        .login a {
+            color: #005792;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .errorlist {
+            color: red;
+            font-size: 14px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="signup-box">
+    <h2>📝 Create Account</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <input type="text" name="username" placeholder="Username" required>
+
+        <input type="password" name="password1" placeholder="Password" required>
+
+        <input type="password" name="password2" placeholder="Confirm Password" required>
+
+        {{ form.errors }}
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <div class="login">
+        Already have an account?  
+        <a href="{% url 'login' %}">Login</a>
+    </div>
+</div>
+
+</body>
+</html>
