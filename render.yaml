@@ -5,6 +5,7 @@ services:
     plan: free
     region: oregon
     buildCommand: ./build.sh
+    releaseCommand: python manage.py migrate --noinput
     startCommand: gunicorn interview_prep.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
