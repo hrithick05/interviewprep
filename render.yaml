@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     region: oregon
-    buildCommand: npm ci && npm run build -w @prepforge/shared && npm run build -w @prepforge/server
+    buildCommand: npm ci --include=dev && npm run build -w @prepforge/shared && npm run build -w @prepforge/server
     startCommand: npm run start -w @prepforge/server
     healthCheckPath: /api/v1/health
     envVars:
