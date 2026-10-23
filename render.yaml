@@ -1,25 +1,18 @@
 services:
   - type: web
-    name: interview-prep-pro
-    env: python
+    name: prepforge-api
+    runtime: node
     plan: free
     region: oregon
-    buildCommand: ./build.sh
-    releaseCommand: python manage.py migrate --noinput
-    startCommand: gunicorn interview_prep.wsgi:application --bind 0.0.0.0:$PORT
+    buildCommand: npm ci && npm run build -w @prepforge/shared && npm run build -w @prepforge/server
+    startCommand: npm run start -w @prepforge/server
+    healthCheckPath: /api/v1/health
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.17
-      - key: DEBUG
-        value: "False"
-      - key: SECRET_KEY
-        generateValue: true
-      - key: ALLOWED_HOSTS
-        value: "*"
-      - key: CSRF_TRUSTED_ORIGINS
-        value: "https://*.onrender.com"
-
-databases:
-  - name: interviewprep-db
-    databaseName: interviewprep
-    user: interviewprep
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_ORIGIN
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false

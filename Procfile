@@ -1,1 +1,1 @@
-web: gunicorn interview_prep.wsgi
+web: npm run start -w @prepforge/server

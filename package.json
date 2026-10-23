@@ -1,0 +1,25 @@
+{
+  "name": "prepforge",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server",
+    "packages/shared"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c blue,green \"npm run dev -w @prepforge/server\" \"npm run dev -w @prepforge/client\"",
+    "build": "npm run build -w @prepforge/shared && npm run build -w @prepforge/server && npm run build -w @prepforge/client",
+    "lint": "npm run lint -w @prepforge/server && npm run lint -w @prepforge/client",
+    "typecheck": "npm run build -w @prepforge/shared && npx tsc --noEmit -p server/tsconfig.json && npx tsc --noEmit -p client/tsconfig.json",
+    "test": "npm run test -w @prepforge/server && npm run test -w @prepforge/client",
+    "db:reset": "npx supabase db reset",
+    "db:push": "npx supabase db push",
+    "db:types": "npx supabase gen types typescript --local --schema public > packages/shared/src/database.generated.ts",
+    "smoke:prod": "npx tsx scripts/smoke-prod.ts",
+    "format": "prettier --write \"client/src/**/*.{ts,tsx,css}\" \"server/src/**/*.ts\" \"packages/shared/src/**/*.ts\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3"
+  }
+}

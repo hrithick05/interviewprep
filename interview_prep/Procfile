@@ -1,1 +1,0 @@
-web: gunicorn interview_prep_project.wsgi
