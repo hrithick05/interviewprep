@@ -27,7 +27,24 @@ PrepForge uses hosted Supabase, Vercel for the client, and Render for the API. D
 4. Deploy and verify `https://YOUR-RENDER-SERVICE.onrender.com/api/v1/health`.
 5. Keep provider keys out of the client. Optional AI and Judge0 credentials belong in Render environment variables only.
 
-## 3. Vercel client
+## 3. Static client
+
+### Netlify
+
+The root [`netlify.toml`](../netlify.toml) configures the monorepo build, publishes `client/dist`, and serves the React app for client-side routes.
+
+1. In Netlify, choose **Add new site > Import an existing project** and select this repository and deployment branch.
+2. Leave the base directory blank so Netlify can install the root npm workspaces.
+3. Add these environment variables in the Netlify site settings:
+   - `VITE_API_URL=https://YOUR-RENDER-SERVICE.onrender.com`
+   - `VITE_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY`
+4. Deploy. Copy the resulting Netlify site URL and set it as Render's `CLIENT_ORIGIN`, then redeploy the API if needed.
+5. Add the Netlify site URL to the allowed redirect URLs in Supabase Auth settings.
+
+Never add `SUPABASE_SECRET_KEY` to Netlify; it belongs only in the backend's Render environment.
+
+### Vercel
 
 1. Import the repository in Vercel and set the root directory to `client`.
 2. Build command: `npm run build`; output directory: `dist`.
